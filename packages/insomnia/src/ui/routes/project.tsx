@@ -792,36 +792,8 @@ const ProjectRoute: FC = () => {
 
   const isGitSyncEnabled = features.gitSync.enabled;
 
-  const showUpgradePlanModal = () => {
-    if (!organization || !userSession.accountId) {
-      return;
-    }
-    const isOwner = isOwnerOfOrganization({
-      organization,
-      accountId: userSession.accountId,
-    });
-
-    isOwner ?
-      showModal(AskModal, {
-        title: 'Upgrade Plan',
-        message: 'Git Sync is only enabled for Team plan or above, please upgrade your plan.',
-        yesText: 'Upgrade',
-        noText: 'Cancel',
-        onDone: async (isYes: boolean) => {
-          if (isYes) {
-            window.main.openInBrowser(`${getAppWebsiteBaseURL()}/app/subscription/update?plan=team`);
-          }
-        },
-      }) : showModal(AlertModal, {
-        title: 'Upgrade Plan',
-        message: 'Git Sync is only enabled for Team plan or above, please ask the organization owner to upgrade.',
-      });
-  };
-
   const importFromGit = () => {
-    isGitSyncEnabled ?
-      setIsGitRepositoryCloneModalOpen(true)
-      : showUpgradePlanModal();
+      setIsGitRepositoryCloneModalOpen(true);
   };
 
   const createInProjectActionList: {
@@ -1286,7 +1258,7 @@ const ProjectRoute: FC = () => {
                           createDesignDocument={createNewDocument}
                           createMockServer={createNewMockServer}
                           importFrom={() => setImportModalType('file')}
-                          cloneFromGit={importFromGit}
+                          localResource={importFromGit}
                           isGitSyncEnabled={isGitSyncEnabled}
                         />
                       );

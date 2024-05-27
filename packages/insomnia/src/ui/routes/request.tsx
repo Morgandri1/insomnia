@@ -272,6 +272,7 @@ export const updateRequestMetaAction: ActionFunction = async ({ request, params 
     await models.grpcRequestMeta.updateOrCreateByParentId(requestId, patch);
     return null;
   }
+  // @ts-expect-error - typescript assumes patch could be of type GrpcRequest, even though the above if block handles that case.
   await models.requestMeta.updateOrCreateByParentId(requestId, patch);
   return null;
 };
